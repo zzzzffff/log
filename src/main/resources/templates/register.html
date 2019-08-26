@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>register</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    请输入姓名：<input type="text" id="name"/><br><br>
+    请输入密码：<input type="password" id="password" placeholder="仅支持整数" /><br><br>
+    请确认密码：<input type="password" id="passwordTwo" placeholder="仅支持整数"/><br><br>
+    验证码： <input type="text" id="code" name="code" required placeholder="请输入验证码" />
+    <img alt="验证码" onclick = "this.src='/getcode?d='+new Date()*1" src="/getcode" style="margin-left:20px;"/>
+    <br><br>
+    <button onclick="register()">注册</button>
+
+
+<script>
+    function register() {
+        var name = $("#name").val();
+        var password1 = $("#password").val();
+        var password2 = $("#passwordTwo").val();
+        var code = $("#code").val();
+        if (Number(password1) == Number(password2)){
+            $.post("register",{name:name,password:password1,code:code},function (res) {
+                switch (res){
+                    case 1:alert("注册成功");
+                    window.location.href="login"
+                    break;
+                    case 2:alert("注册失败，原因未知");
+                    break;
+                    case 3:alert("验证码错误");
+                }
+            })
+
+        }else {
+            alert("两次密码不一致！");
+        }
+    }
+</script>
+</body>
+</html>
